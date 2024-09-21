@@ -1,0 +1,104 @@
+# Q1 
+import yfinance as yf
+tesla_data = yf.download("TSLA", start="YYYY-MM-DD", end="YYYY-MM-DD")
+
+# Q2 
+import requests
+from bs4 import BeautifulSoup
+
+url = "URL of Tesla revenue data"
+response = requests.get(url)
+soup = BeautifulSoup(response.text, 'html.parser')
+# Extract the relevant table or data
+
+#Q3
+gamestop_data = yf.download("GME", start="YYYY-MM-DD", end="YYYY-MM-DD")
+
+#Q4
+import requests
+from bs4 import BeautifulSoup
+import pandas as pd
+
+# URL for GameStop's financial data (ensure you're scraping a page that provides revenue)
+url = "URL_to_Gamestop_revenue_data"  # Replace with actual URL
+response = requests.get(url)
+soup = BeautifulSoup(response.text, 'html.parser')
+
+# Example: If revenue is inside a table, find it using appropriate tag and class names
+table = soup.find("table", {"class": "financials"})  # Replace with correct class
+
+# Parse table rows
+rows = table.find_all('tr')
+
+# Store data into a list
+revenue_data = []
+for row in rows:
+    cols = row.find_all('td')
+    cols = [ele.text.strip() for ele in cols]
+    revenue_data.append([ele for ele in cols if ele])
+
+# Convert into DataFrame
+columns = ['Date', 'Revenue']  # Adjust column names as per the table structure
+df_gme_revenue = pd.DataFrame(revenue_data, columns=columns)
+
+# Display the extracted revenue data
+print(df_gme_revenue)
+
+# Q5
+import yfinance as yf
+import matplotlib.pyplot as plt
+
+# Download Tesla stock data
+tesla_data = yf.download("TSLA", start="2020-01-01", end="2023-01-01")
+
+# Plot Tesla stock price over time
+plt.figure(figsize=(10, 5))
+plt.plot(tesla_data.index, tesla_data['Close'], label="Tesla Close Price", color='blue')
+plt.title("Tesla Stock Price Over Time")
+plt.xlabel("Date")
+plt.ylabel("Close Price (USD)")
+plt.legend()
+plt.show()
+
+# Assuming you have Tesla revenue data in df_tesla_revenue
+df_tesla_revenue = pd.DataFrame({
+    'Date': ['2020', '2021', '2022'],  # Example dates
+    'Revenue': [31.54, 45.37, 53.82]   # Example revenue in billions
+})
+
+# Plot Tesla revenue over time
+plt.figure(figsize=(10, 5))
+plt.bar(df_tesla_revenue['Date'], df_tesla_revenue['Revenue'], color='green')
+plt.title("Tesla Revenue Over Time")
+plt.xlabel("Year")
+plt.ylabel("Revenue (Billions USD)")
+plt.show()
+
+#Q6
+# Download GameStop stock data
+gamestop_data = yf.download("GME", start="2020-01-01", end="2023-01-01")
+
+# Plot GameStop stock price over time
+plt.figure(figsize=(10, 5))
+plt.plot(gamestop_data.index, gamestop_data['Close'], label="GameStop Close Price", color='red')
+plt.title("GameStop Stock Price Over Time")
+plt.xlabel("Date")
+plt.ylabel("Close Price (USD)")
+plt.legend()
+plt.show()
+
+# Assuming you have GameStop revenue data in df_gme_revenue
+df_gme_revenue = pd.DataFrame({
+    'Date': ['2020', '2021', '2022'],  # Example dates
+    'Revenue': [6.47, 5.09, 6.01]      # Example revenue in billions
+})
+
+# Plot GameStop revenue over time
+plt.figure(figsize=(10, 5))
+plt.bar(df_gme_revenue['Date'], df_gme_revenue['Revenue'], color='purple')
+plt.title("GameStop Revenue Over Time")
+plt.xlabel("Year")
+plt.ylabel("Revenue (Billions USD)")
+plt.show()
+
+
